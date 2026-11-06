@@ -9,6 +9,21 @@ I do that too, but I really dislike the idea of having yet another highly-privil
 * [Authentication](docs/authentication.md)
 * [Threat model](docs/threat-model.md)
 
+## NixOS module
+
+Import the flake's `nixosModules.default` and configure
+`boot.initrd.network.hoopsnake`. The module supports only systemd initrd;
+on older NixOS releases where it is optional, enable systemd initrd explicitly.
+Scripted initrd is no longer supported. No Hoopsnake service or initrd secrets
+are configured unless both `boot.initrd.network.hoopsnake.enable` and
+`boot.initrd.enable` are true.
+
+Use `boot.initrd.network.hoopsnake.systemd-credentials.privateHostKey` for the SSH
+host key; the former `ssh.privateHostKey` and `tailscale.cleanup.exitTimeoutSec`
+options have been removed. Existing systemd credential file/text and
+encrypted/plaintext handling is unchanged. `tailscale.environmentFile` remains
+available to the systemd service; keep secret files out of the Nix store.
+
 ## What you get
 
 Hoopsnake can do the following:
